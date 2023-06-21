@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { useState, useEffect } from "react";
+import { Country } from "@prisma/client";
 
 const getRecordList = async (url: string) => {
   const res = await fetch(url);
@@ -12,7 +13,7 @@ const getRecordList = async (url: string) => {
   return data;
 };
 
-export const ResortList = () => {
+export const ResortList = ({ country_list }: { country_list: Country[] }) => {
   // *****
   // TODO:
   // 1. please change how to get the data using client-side fetching from "/api/resort/list"
@@ -42,10 +43,10 @@ export const ResortList = () => {
               className="flex gap-32 text-xl shadow-lg items-center justify-between p-8 rounded-sm hover:bg-slate-200 transition-all"
               href={`/resort/${resort.slug}`}
             >
-              {resort.resort_name}
+              {resort.name}
               <Image
                 src={resort.image_url}
-                alt={resort.resort_name}
+                alt={resort.name}
                 width={520}
                 height={300}
                 className="object-cover h-32 w-60"
@@ -54,7 +55,7 @@ export const ResortList = () => {
           ))}
         </div>
       </div>
-      <Sidebar />
+      <Sidebar country_list={country_list} />
     </section>
   );
 };
